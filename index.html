@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shoes Store</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#" class="logo"> <img src="/New folder/shoes-logo.png" alt=""></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="Store.html">Store</a></li>
+                <li><a href="Blog.html">Blog</a></li>
+                <li><a href="Store.html">For Men</a></li>
+                <li class="on-sale">ON SALE</li>
+            </ul>
+            <div class="nav-right">
+                <a href="cart.html">
+                    <button class="cart-btn">Cart</button>
+                </a>
+                <a href="login.html">
+                    <button class="login-btn">Login</button>
+                </a>
+                <a href="signup.html">
+                    <button class="login-btn">Signup</button>
+                </a>
+                
+            </div>
+            
+        </nav>
+        
+    </header>
+
+    <div class="slider-image">
+        <img src="./New folder/slider-image.png" alt="Slider" width="100%">
+    </div>
+    
+
+    <section class="featured-product">
+        <h2>Featured Product</h2>
+        <div class="product-card">
+            <img src="/New folder/eleg2.png" alt="Cool Air Shoes">
+            <h3>Cool Air Shoes</h3>
+            <p>Price: $10.00</p>
+            <p>Experience the ultimate comfort and style with our Cool Air Shoes.</p>
+            <button onclick="addToCart(1, 'Product 1', 10.00)">Add to Cart</button>
+        </div>
+        </div>
+
+         </div>
+        <div class="product-card">
+            <img src="/New folder/eleg3.png" alt="Sporty Sneakers">
+            <h3>Sporty Sneakers</h3>
+            <p>Price: $20</p>
+            <p>Get ready for action with our Sporty Sneakers.</p>
+            <button onclick="addToCart(1, 'Product 2', 20.00)">Add to Cart</button>
+        
+        </div>
+        <div class="product-card">
+            <img src="/New folder/eleg.png" alt="Elegant Heels">
+            <h3>Elegant Heels</h3>
+            <p>Price: $30</p>
+            <p>Step out in style with our Elegant Heels.</p>
+            <button onclick="addToCart(1, 'Product 3', 30.00)">Add to Cart</button>
+    </section>
+    
+
+    <footer>
+        <div class="footer-content">
+            <p>© 2024 Shoes Store. All rights reserved.</p>
+            <ul class="social-links">
+                <li><a href="#">Facebook</a></li>
+                <li><a href="#">Twitter</a></li>
+                <li><a href="#">Instagram</a></li>
+            </ul>
+        </div>
+    </footer>
+<script>
+    // Function to add item to the cart
+function addToCart(id, name, price) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || []; // Retrieve cart or initialize empty array
+
+    // Check if the item is already in the cart
+    const existingItem = cart.find(item => item.id === id);
+
+    if (existingItem) {
+        // If item exists, increase the quantity
+        existingItem.quantity += 1;
+    } else {
+        // If item doesn't exist, add new item
+        cart.push({ id, name, price, quantity: 1 });
+    }
+
+    // Save the updated cart to localStorage
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    alert(`${name} added to cart!`);
+}
+</script>
+    
+</body>
+</html>

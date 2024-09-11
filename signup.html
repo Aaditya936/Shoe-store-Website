@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shoes Store</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#" class="logo"> <img src="/New folder/shoes-logo.png" alt=""></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="Store.html">Store</a></li>
+                <li><a href="Blog.html">Blog</a></li>
+                <li><a href="Store.html">For Men</a></li>
+                <li class="on-sale">ON SALE</li>
+            </ul>
+            <div class="nav-right">
+                <a href="cart.html">
+                    <button class="cart-btn">Cart</button>
+                </a>
+                <a href="login.html">
+                    <button class="login-btn">Login</button>
+                </a>
+                
+                
+            </div>
+            
+        </nav>
+        
+    </header>
+
+
+    
+    
+    <div class="container">
+        <div class="form-container">
+            
+
+           
+
+            <!-- Signup Form -->
+            <form id="signupForm" class="form hidden" onsubmit="return validateSignupForm(event)">
+                <h2>Sign Up</h2>
+                <label for="signup-username">Username</label>
+                <input type="text" id="signup-username" placeholder="Enter your username" required>
+
+                <label for="signup-email">Email</label>
+                <input type="email" id="signup-email" placeholder="Enter your email" required>
+
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" placeholder="Create a password" required>
+
+                <button type="submit">Sign Up</button>
+                <p id="signup-error" class="error-message"></p>
+            </form>
+        </div>
+    </div>
+
+    
+   
+
+<script>
+       // Switch between login and signup forms
+function showLogin() {
+    document.getElementById('loginForm').classList.remove('hidden');
+    document.getElementById('signupForm').classList.add('hidden');
+    document.getElementById('loginBtn').classList.add('active');
+    document.getElementById('signupBtn').classList.remove('active');
+}
+
+function showSignup() {
+    document.getElementById('signupForm').classList.remove('hidden');
+    document.getElementById('loginForm').classList.add('hidden');
+    document.getElementById('signupBtn').classList.add('active');
+    document.getElementById('loginBtn').classList.remove('active');
+}
+
+// Form validation for login
+function validateLoginForm(event) {
+    event.preventDefault(); // Prevent form submission
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+
+    if (!email || !password) {
+        document.getElementById('login-error').textContent = 'All fields are required';
+        return false;
+    }
+
+    const payload = { email, password };
+    sendLoginRequest(payload);
+    return true;
+}
+
+// Form validation for signup
+ function validateSignupForm(event) {
+    event.preventDefault(); // Prevent form submission
+    const username = document.getElementById('signup-username').value;
+    const email = document.getElementById('signup-email').value;
+    const password = document.getElementById('signup-password').value;
+
+    if (!username || !email || !password) {
+        document.getElementById('signup-error').textContent = 'All fields are required';
+        return false;
+    }
+
+    const payload = { username, email, password };
+    sendSignupRequest(payload);
+    return true;
+}
+
+// Send login request
+function sendLoginRequest(data) {
+    fetch('/api/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            alert('Login successful!');
+        } else {
+            document.getElementById('login-error').textContent = result.message;
+        }
+    });
+}
+
+
+// Send signup request
+function sendSignupRequest(data) {
+    fetch('/api/signup', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            alert('Signup successful!');
+        } else {
+            document.getElementById('signup-error').textContent = result.message;
+        }
+    });
+}
+
+</script>
+
+    <footer>
+        <div class="footer-content">
+            <p>© 2024 Shoes Store. All rights reserved.</p>
+            <ul class="social-links">
+                <li><a href="#">Facebook</a></li>
+                <li><a href="#">Twitter</a></li>
+                <li><a href="#">Instagram</a></li>
+            </ul>
+        </div>
+    </footer>
+    
+</body>
+</html>

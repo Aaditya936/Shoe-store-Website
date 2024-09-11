@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shoes Store</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#" class="logo"> <img src="/New folder/shoes-logo.png" alt=""></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="Store.html">Store</a></li>
+                <li><a href="Blog.html">Blog</a></li>
+                <li><a href="Store.html">For Men</a></li>
+                <li class="on-sale">ON SALE</li>
+            </ul>
+            <div class="nav-right">
+                <button class="cart-btn">Cart</button>
+                <a href="login.html">
+                    <button class="login-btn">Login</button>
+                </a>
+            </div>
+            
+        </nav>
+
+        <div class="cart-container">
+            <h1>Shopping Cart</h1>
+            
+            <div class="cart-items">
+                <!-- Cart item 1 -->
+                <div class="cart-item">
+                    <div class="item-details">
+                        <img src="/New folder/pr2.png" alt="Product 1">
+                        <div class="item-info">
+                            <h3>Product 1</h3>
+                            <p>$10.00</p>
+                        </div>
+                    </div>
+                    <div class="quantity-control">
+                        <button onclick="decreaseQuantity(1)">-</button>
+                        <input type="number" id="quantity-1" value="1" readonly>
+                        <button onclick="increaseQuantity(1)">+</button>
+                    </div>
+                    <div class="item-total">
+                        <p id="item-total-1">$10.00</p>
+                    </div>
+                    <button class="remove-item" onclick="removeItem(1)">Remove</button>
+                </div>
+    
+                <!-- Cart item 2 -->
+                <div class="cart-item">
+                    <div class="item-details">
+                        <img src="./New folder/pr1.png" alt="Product 2">
+                        <div class="item-info">
+                            <h3>Product 2</h3>
+                            <p>$20.00</p>
+                        </div>
+                    </div>
+                    <div class="quantity-control">
+                        <button onclick="decreaseQuantity(2)">-</button>
+                        <input type="number" id="quantity-2" value="1" readonly>
+                        <button onclick="increaseQuantity(2)">+</button>
+                    </div>
+                    <div class="item-total">
+                        <p id="item-total-2">$20.00</p>
+                    </div>
+                    <button class="remove-item" onclick="removeItem(2)">Remove</button>
+                </div>
+            </div>
+    
+            <!-- Cart Summary -->
+            <div class="cart-summary">
+                <h3>Cart Summary</h3>
+                <p>Total Items: <span id="total-items">2</span></p>
+                <p>Total Price: $<span id="total-price">30.00</span></p>
+                <a href="checkout.html"><button class="checkout-btn">Proceed to Checkout</button></a>
+            </div>
+        </div>
+    
+        <footer>
+            <div class="footer-content">
+                <p>© 2024 Shoes Store. All rights reserved.</p>
+                <ul class="social-links">
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Instagram</a></li>
+                </ul>
+            </div>
+        </footer>
+
+<script>
+            // Load cart from localStorage and display it
+ function loadCart() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    if (cart.length === 0) {
+        document.querySelector('.cart-items').innerHTML = '<p>Your cart is empty.</p>';
+    } else {
+        cart.forEach(item => {
+            addItemToCart(item.id, item.name, item.price, item.quantity);
+        });
+        updateCartSummary();
+    }
+ }
+
+  // Dynamically add items to the cart page
+ function addItemToCart(id, name, price, quantity) {
+    const cartItems = document.querySelector('.cart-items');
+
+    const cartItemHTML = `
+        <div class="cart-item" data-id="${id}">
+            <div class="item-details">
+                <h3>${name}</h3>
+                <p>$${price.toFixed(2)}</p>
+            </div>
+            <div class="quantity-control">
+                <button onclick="decreaseQuantity(${id})">-</button>
+                <input type="number" id="quantity-${id}" value="${quantity}" readonly>
+                <button onclick="increaseQuantity(${id})">+</button>
+            </div>
+            <div class="item-total">
+                <p id="item-total-${id}">$${(price * quantity).toFixed(2)}</p>
+            </div>
+            <button class="remove-item" onclick="removeItem(${id})">Remove</button>
+        </div>
+    `;
+
+    cartItems.innerHTML += cartItemHTML;
+ }
+ 
+  // Increase the quantity of an item
+  function increaseQuantity(id) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const item = cart.find(item => item.id === id);
+    
+    if (item) {
+        item.quantity += 1;
+        document.getElementById(`quantity-${id}`).value = item.quantity;
+        document.getElementById(`item-total-${id}`).textContent = `$${(item.price * item.quantity).toFixed(2)}`;
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartSummary();
+}
+
+ // Decrease the quantity of an item
+ function decreaseQuantity(id) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const item = cart.find(item => item.id === id);
+
+    if (item && item.quantity > 1) {
+        item.quantity -= 1;
+        document.getElementById(`quantity-${id}`).value = item.quantity;
+        document.getElementById(`item-total-${id}`).textContent = `$${(item.price * item.quantity).toFixed(2)}`;
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartSummary();
+ }
+
+ // Remove item from cart
+ function removeItem(id) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart = cart.filter(item => item.id !== id);
+    
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    // Remove item from DOM
+    document.querySelector(`.cart-item[data-id="${id}"]`).remove();
+    
+    updateCartSummary();
+ }
+
+ // Update the cart summary (total items and price)
+ function updateCartSummary() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let totalItems = 0;
+    let totalPrice = 0;
+
+    cart.forEach(item => {
+        totalItems += item.quantity;
+        totalPrice += item.price * item.quantity;
+    });
+
+    document.getElementById('total-items').textContent = totalItems;
+    document.getElementById('total-price').textContent = totalPrice.toFixed(2);
+ }
+
+ // Load the cart when the page is ready
+ window.onload = loadCart;
+
+           
+</script>
+        
+    </body>
+    </html>
+    
